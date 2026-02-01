@@ -1,0 +1,32 @@
+# version: '3'
+services:
+  orders_service:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      ENV: DEV
+      # DATABASE_URL: postgresql://postgres:postgres@db:5432/orders
+    volumes:
+      -./orders_service:/app/orders_service_dev
+      #   depends_on:
+      # - db
+  
+  # analytics_service:
+  #   build: ./analytics_service
+  #   ports:
+  #     - "8002:8002"
+
+  #  db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: orders
+  #   ports:
+  #     - "5432:5432"
+
+
+  
