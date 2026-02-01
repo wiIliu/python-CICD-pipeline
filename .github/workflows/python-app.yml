@@ -38,7 +38,7 @@ jobs:
       run: |
         mkdir -p logs
         LOGFILE="logs/pytest-$(date +'%Y-%m-%d_%H%M%S').log"
-        pytest test/ -v --tb=long \
+        pytest test/ -v --tb=long --cov \
         --log-format="%(asctime)s %(levelname)s %(message)s" \
         --log-date-format="%Y-%m-%d %H:%M:%S" \
         --log-file="$LOGFILE" \
