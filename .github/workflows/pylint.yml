@@ -23,4 +23,10 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py') --exit-zero --reports=y
+        pylint $(git ls-files '*.py') --exit-zero \
+        --reports=y \
+        --output-format=junit-xml:pylint.xml
+    - uses: actions/upload-artifact@v6
+      with:
+        name: pylint-report
+        path: pylint.xml
