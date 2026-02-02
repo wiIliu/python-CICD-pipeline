@@ -1,25 +1,23 @@
-from fastapi import APIRouter
-from fastapi import HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 from ...schemas.order import Order
-
+from ...dependencies.db import get_db
 
 router = APIRouter(
     prefix="/orders",
     tags=["orders"],
 )
 
-order_db={}
 
 @router.post("/")
-def create_order(order : Order):
-    if order.id not in order_db:
-        order_db[order.id] = order
+def create_order(order : Order, db: Session = Depends(get_db)):
+    if order.id not in db:
+        db[order.id] = order
         return {"message": "Order placed successfully"}
     raise HTTPException(status_code=400, detail="Order already exists")
 
 @router.get("/{order_id}")
-def get_order(order_id: int):
-    if order_id not in order_db:
+def get_order(order_id: int, db: Session = De[Depends(get_db)]):
+    if order_id not in db:
         raise HTTPException(status_code=404, detail="Order not found")
-    return order_db[order_id]
+    return db[order_id]
