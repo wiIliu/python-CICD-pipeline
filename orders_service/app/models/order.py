@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float
-from ..core.database import Base
+from orders_service.app.core.database import Base
 
 class Order(Base):
     __tablename__ = "orders"
