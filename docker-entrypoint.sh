@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "ENV = $ENV"
+
 if [ "$ENV" = "DEV" ]; then
     echo "Running dev"
     exec uvicorn orders_service.app.main:app \

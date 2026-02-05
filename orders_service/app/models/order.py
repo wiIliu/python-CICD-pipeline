@@ -9,3 +9,5 @@ class Order(Base):
     product = Column(String)
     count = Column(Integer)
     price = Column(Float)
+    def __repr__(self) -> str:
+        return f"Order(id={self.id})"
