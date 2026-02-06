@@ -42,7 +42,9 @@ jobs:
         
       - name: Set lowercase repo name
         run: |
-          echo "REPO=${github.event.repository.name@L}" >> "${GITHUB_ENV}"
+          # echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+          echo "REPO=$(echo "${GITHUB_REPOSITORY##*/}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+
           
       - name: Build and push
         uses: docker/build-push-action@v6
