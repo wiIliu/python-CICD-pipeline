@@ -25,12 +25,16 @@ jobs:
           POSTGRES_PASSWORD: test
           POSTGRES_DB: test_db
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U test -d test_db"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          
+    env:
+      DATABASE_URL: postgresql+psycopg://test:test@postgres:5432/test_db
 
     steps:
+    - uses: actions/checkout@v4
     
     - name: Set up Python 3.11
       uses: actions/setup-python@v5
@@ -43,10 +47,16 @@ jobs:
         pip install pytest pytest-cov alembic
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+    - name: Wait for Postgres
+      run: |
+        until pg_isready -h postgres -U test -d test_db; do
+          sleep 2
+        done
+
     - name: Run migrations
-      env:
-        DATABASE_URL: postgresql://test:test@localhost:5432/test_db
       run: alembic upgrade head
+    #   env:
+    #     DATABASE_URL: postgresql://test:test@localhost:5432/test_db
 
     - name: Integration tests with pytest
       run: |
