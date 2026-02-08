@@ -1,11 +1,10 @@
+import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     DATABASE_URL: str
     class Config:
-        env_file = ".env"
+        env_file = os.getenv("ENV_FILE", ".env")
 
 
-print(Settings().model_dump())
 settings = Settings()
-

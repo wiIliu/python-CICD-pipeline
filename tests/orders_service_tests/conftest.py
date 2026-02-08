@@ -1,5 +1,5 @@
 import pytest
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from fastapi.testclient import TestClient
@@ -8,8 +8,7 @@ from ..factories.order_factory import OrderFactory
 from orders_service.app.core.config import settings
 from orders_service.app.dependencies.db import get_db
 
-load_dotenv(".env.test",override=True)
-
+# load_dotenv(".env.test",override=True)
 
 
 engine = create_engine(settings.DATABASE_URL)

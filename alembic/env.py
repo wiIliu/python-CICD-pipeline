@@ -1,3 +1,4 @@
+from os import getenv
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -18,6 +19,15 @@ config = context.config
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+
+DATABASE_URL = getenv("DATABASE_URL")
+print(DATABASE_URL)
+# # DATABASE_URL="postgresql+psycopg://test1:test1@localhost:5432/orders_TEST"
+
+# if not DATABASE_URL:
+#     raise RuntimeError("DATABASE_URL not set")
+
 
 
 config.set_main_option("sqlalchemy.url",
