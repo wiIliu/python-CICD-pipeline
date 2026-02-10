@@ -33,7 +33,7 @@ jobs:
           - 5432:5432
           
     env:
-      DATABASE_URL: postgresql+psycopg://test:test@postgres:5432/test_db
+      DATABASE_URL: postgresql+psycopg://test:test@localhost:5432/test_db
 
     steps:
     - uses: actions/checkout@v4
