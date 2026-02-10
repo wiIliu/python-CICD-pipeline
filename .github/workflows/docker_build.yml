@@ -30,9 +30,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./orders_serivice
+          # context: ./orders_serivice
+          context: .
           push: true
           tags: |
             ${{ vars.DOCKER_USERNAME }}/orders_service:latest
-            ${{ vars.DOCKER_USERNAME }}/orders_service:latest
+            ${{ vars.DOCKER_USERNAME }}/orders_service:${{ github.sha }}
             # ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}/orders-service:${{ github.sha }}
