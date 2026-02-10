@@ -6,31 +6,12 @@ on:
       - main
 
 jobs:
-  lint-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # - name: Run pre-commit hooks
-      #   run: pre-commit run --all-files
-
-      # - name: Run pyright
-      #   run: pyright
-
   build_and_push:
     runs-on: ubuntu-latest
     
     steps:     
+      - uses: actions/checkout@v4
+    
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -40,14 +21,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         
-      - name: Set lowercase repo name
-        run: |
-          # echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
-          echo "REPO=$(echo "${GITHUB_REPOSITORY##*/}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+      # - name: Set lowercase repo name
+      #   run: |
+      #     # echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+      #     echo "REPO=$(echo "${GITHUB_REPOSITORY##*/}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
 
           
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./orders_serivice
           push: true
-          tags: ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}:latest
+          tags: |
+            ${{ vars.DOCKER_USERNAME }}/orders_service:latest
+            ${{ vars.DOCKER_USERNAME }}/orders_service:latest
+            # ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}/orders-service:${{ github.sha }}
