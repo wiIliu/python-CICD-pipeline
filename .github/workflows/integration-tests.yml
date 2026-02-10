@@ -21,11 +21,11 @@ jobs:
       postgres:
         image: postgres:16-bookworm
         env:
-          POSTGRES_USER: test1
-          POSTGRES_PASSWORD: test1
-          POSTGRES_DB: orders_TEST
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: test_db
         options: >-
-          --health-cmd "pg_isready -U test1 -d orders_TEST"
+          --health-cmd "pg_isready -U test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -33,7 +33,7 @@ jobs:
           - 5432:5432
           
     env:
-      DATABASE_URL: postgresql+psycopg://test1:test1@postgres:5432/orders_TEST
+      DATABASE_URL: postgresql+psycopg://test:test@postgres:5432/test_db
 
     steps:
     - uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
 
     - name: Wait for Postgres
       run: |
-        until pg_isready -h postgres -U test1 -d orders_TEST; do
+        until pg_isready -h localhost -p 5432 -U test
           sleep 2
         done
 
