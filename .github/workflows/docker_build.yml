@@ -25,6 +25,7 @@ jobs:
       #   run: |
       #     # echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
       #     echo "REPO=$(echo "${GITHUB_REPOSITORY##*/}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
+      # ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}/orders-service:${{ github.sha }}
 
           
       - name: Build and push
@@ -36,4 +37,4 @@ jobs:
           tags: |
             ${{ vars.DOCKER_USERNAME }}/orders_service:latest
             ${{ vars.DOCKER_USERNAME }}/orders_service:${{ github.sha }}
-            # ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}/orders-service:${{ github.sha }}
+            
