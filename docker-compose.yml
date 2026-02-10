@@ -1,32 +1,41 @@
 # version: '3'
 services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PSWD}
+      POSTGRES_DB: ${DATABASE_DB}
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   orders_service:
     build: 
       context: .
       dockerfile: Dockerfile
+    restart: on-failure
     ports:
       - "8000:8000"
     environment:
       ENV: DEV
-      # DATABASE_URL: postgresql://postgres:postgres@db:5432/orders
+    env_file: .env
     volumes:
-      -./orders_service:/app/orders_service_dev
-      #   depends_on:
-      # - db
+      - ./orders_service:/app/orders_service
+    depends_on:
+      db:
+        condition: service_healthy
   
+
+volumes:
+  postgres_data:
+
   # analytics_service:
   #   build: ./analytics_service
   #   ports:
   #     - "8002:8002"
-
-  #  db:
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: orders
-  #   ports:
-  #     - "5432:5432"
-
-
-  

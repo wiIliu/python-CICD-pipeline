@@ -1,25 +1,32 @@
-from fastapi import APIRouter
-from fastapi import HTTPException
-from pydantic import BaseModel
-from ...schemas.order import Order
+from typing import Annotated
+from sqlalchemy.orm import Session
+from fastapi import APIRouter, Depends, HTTPException
 
+from ...schemas.order import OrderCreate, OrderResponse
+from ...dependencies.db import get_db
+from ...models.order import Order
 
 router = APIRouter(
     prefix="/orders",
     tags=["orders"],
 )
 
-order_db={}
 
-@router.post("/")
-def create_order(order : Order):
-    if order.id not in order_db:
-        order_db[order.id] = order
-        return {"message": "Order placed successfully"}
-    raise HTTPException(status_code=400, detail="Order already exists")
+@router.post("/", response_model=OrderResponse, status_code=201)
+def create_order(order : OrderCreate, db: Annotated[Session, Depends(get_db)]):
+    db_order = Order(name=order.name,product=order.product, price=order.price, count=order.count)
+    try:
+        db.add(db_order)
+        db.commit()
+        db.refresh(db_order)
+    except Exception as e:
+        db.rollback()
+        print("🔥 EXCEPTION:", repr(e))
+        raise
+    return db_order
 
-@router.get("/{order_id}")
-def get_order(order_id: int):
-    if order_id not in order_db:
+@router.get("/{order_id}", response_model=OrderResponse)
+def get_order(order_id: int, db: Annotated[Session, Depends(get_db)]) -> OrderResponse:
+    if order_id not in db:
         raise HTTPException(status_code=404, detail="Order not found")
-    return order_db[order_id]
+    return order_id
