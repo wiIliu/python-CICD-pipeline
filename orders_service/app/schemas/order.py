@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from pydantic import ConfigDict
+
 
 class OrderCreate(BaseModel):
     name: str
@@ -12,6 +14,8 @@ class OrderResponse(BaseModel):
     product: str
     count: int
     price: float
-    class Config:
-        from_attributes = True
+    
+    model_config = ConfigDict(
+        from_attributes=True
+    )
         
