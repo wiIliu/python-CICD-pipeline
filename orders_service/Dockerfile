@@ -1,13 +1,13 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /app/orders_service
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-COPY pytest.ini .
-COPY orders_service ./orders_service
-COPY tests ./tests/
+# COPY pytest.ini .
+COPY app ./app
+# COPY tests ./tests/
 COPY alembic.ini .
 COPY alembic ./alembic
 COPY docker-entrypoint.sh .

@@ -10,6 +10,8 @@ from orders_service.app.core.config import settings
 from orders_service.app.models import order
 from orders_service.app.core.database import Base
 
+# from app.models import order
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -16,14 +16,19 @@ from ..factories.order_factory import OrderFactory
 from orders_service.app.core.config import settings
 from orders_service.app.dependencies.db import get_db
 
+print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
+# print("[TEST] Alembic sqlalchemy.url =", alembic_cfg.get_main_option("sqlalchemy.url"))
 
 #TODO: path change - alembic.ini
 @pytest.fixture(scope="session", autouse=True)
 def migrate_db():
-    alembic_cfg = Config("alembic.ini")
+    alembic_cfg = Config("orders_service/alembic.ini")
     command.upgrade(alembic_cfg, "head")
 
     yield
+
+print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
+# print("[TEST] Alembic sqlalchemy.url =", alembic_cfg.get_main_option("sqlalchemy.url"))
 
 #TODO: put in function?
 engine = create_engine(settings.DATABASE_URL)

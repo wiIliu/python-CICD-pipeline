@@ -4,6 +4,7 @@ set -e
 echo "ENV = $ENV"
 
 if [ "$ENV" = "DEV" ]; then
+    pwd
     echo "Running dev"
     exec uvicorn orders_service.app.main:app \
     --host 0.0.0.0 \
