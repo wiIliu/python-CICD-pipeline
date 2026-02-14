@@ -17,14 +17,15 @@ services:
       retries: 5
   orders_service:
     build: 
-      context: .
-      dockerfile: Dockerfile
+      context: orders_service/
+      target: dev
+      dockerfile: ./Dockerfile
     restart: on-failure
     ports:
       - "8000:8000"
     environment:
       ENV: DEV
-    env_file: .env
+    env_file: orders_service/.env
     volumes:
       - ./orders_service:/app/orders_service
     depends_on:
