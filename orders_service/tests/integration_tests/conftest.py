@@ -6,6 +6,7 @@ os.environ.setdefault(
 )
 
 import pytest
+from pathlib import Path
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import create_engine
@@ -22,7 +23,11 @@ print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
 #TODO: path change - alembic.ini
 @pytest.fixture(scope="session", autouse=True)
 def migrate_db():
-    alembic_cfg = Config("orders_service/alembic.ini")
+    base_dir = Path(__file__).resolve().parents[2]
+    alembic_path = base_dir / "alembic.ini"
+
+    alembic_cfg = Config(str(alembic_path))
+    # alembic_cfg = Config("orders_service/alembic.ini")
     command.upgrade(alembic_cfg, "head")
 
     yield

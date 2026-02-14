@@ -18,6 +18,7 @@ services:
   orders_service:
     build: 
       context: orders_service/
+      target: dev
       dockerfile: ./Dockerfile
     restart: on-failure
     ports:
