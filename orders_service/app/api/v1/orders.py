@@ -2,7 +2,7 @@ from typing import Annotated, List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException
 
-from ...schemas.order import OrderCreate, OrderResponse, OrderUpdate
+from ...schemas.order import OrderCreate, OrderResponse, OrderUpdate, OrderListResponse
 from ...dependencies.db import get_db
 from ...db_logic import crud
 router = APIRouter(
@@ -16,11 +16,12 @@ def post_order(order : OrderCreate, db: Annotated[Session, Depends(get_db)]):
     return crud.create_order(db, order)
 
 
-@router.get("/", response_model=List[OrderResponse])
+@router.get("/", response_model=OrderListResponse)
 def get_orders(db: Annotated[Session, Depends(get_db)],
                         name: str | None = None,
                         product: str | None = None):
-    return crud.get_orders(db ,name, product)
+    orders = crud.get_orders(db ,name, product)
+    return {"items": orders}
 
 @router.get("/{order_id}", response_model=OrderResponse)
 def get_order_from_id(order_id: int, db: Annotated[Session, Depends(get_db)]) -> OrderResponse:
