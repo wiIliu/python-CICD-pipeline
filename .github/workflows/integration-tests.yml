@@ -5,7 +5,7 @@ name: integration-tests
 
 on:
   push:
-    branches: [ "main", "Aid/refactoring" ]
+    branches: [ "main", "dev" ]
   pull_request:
     branches: [ "main" ]
 
