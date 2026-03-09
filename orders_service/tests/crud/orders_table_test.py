@@ -96,16 +96,32 @@ def test_get_orders_by_filters_no_match(db: Session) -> None:
 
 
 ### DELETE TESTS ###
+def test_delete_by_id(db: Session, fixture_order: Order) -> None:
+    result = crud.delete_by_id(db, order_id=fixture_order.id)
+    assert result
+    assert result.id == fixture_order.id
+    
+    deleted = db.query(Order).filter(Order.id == fixture_order.id).first()
+    assert deleted is None
 
+def test_delete_by_id_not_found(db: Session) -> None:
+    OrderFactory.create_batch(5)
+    order = crud.delete_by_id(db=db, order_id=9999)
+    assert order is None
 
-# def test_delete_todo(db: Session, todo: Todo) -> None:
-#     todo2 = crud.todo.remove(db=db, id=todo.id)
-#     todo3 = crud.todo.get(db=db, id=todo.id)
-#     assert todo3 is None
-#     assert todo2.id == todo.id
-#     assert todo2.title == todo.title
-#     assert todo2.owner_id == todo.owner_id
+def test_delete_reduces_row_count(db: Session):
+    OrderFactory.create_batch(5)
+    order = db.query(Order).first()
+    crud.delete_by_id(db, order.id)
 
+    remaining = db.query(Order).count()
+    assert remaining == 4
+
+def test_delete_same_id_twice(db: Session, fixture_order: Order):
+    crud.delete_by_id(db, fixture_order.id)
+    result = crud.delete_by_id(db, fixture_order.id)
+
+    assert result is None
 
 
 # orders = [
