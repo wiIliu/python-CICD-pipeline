@@ -2,23 +2,42 @@ from sqlalchemy.orm import Session
 
 from orders_service.app.db_logic import crud
 from orders_service.app.models.order import Order
-from orders_service.app.schemas.order import OrderCreate
+from orders_service.app.schemas.order import OrderCreate, OrderUpdate
 from orders_service.tests.factories.order_factory import OrderFactory
 
 
 ### CREATE TESTS ### 
 def test_create_order(db: Session) -> None:
-    data: Order = OrderFactory.build(name="testFactory")
-    new_order = OrderCreate(**{
-        "name": data.name,
-        "product": data.product,
-        "count": data.count,
-        "price": data.price,
-    })
+    data: Order = OrderFactory.build()
+    new_order = OrderCreate(
+        name=data.name,
+        product=data.product,
+        count=data.count,
+        price=data.price,
+    )
+
     result = crud.create_order(db=db, new_order=new_order)
-    
     assert result.id is not None
     assert result.name == data.name
+
+def test_created_order_persists_correctly(db: Session) -> None:
+    data: Order = OrderFactory.build()
+    new_order = OrderCreate(
+        name=data.name,
+        product=data.product,
+        count=data.count,
+        price=data.price,
+    )
+
+    result = crud.create_order(db=db, new_order=new_order)
+    stored = db.query(Order).filter(Order.id == result.id).first()
+    
+    assert stored is not None
+    assert stored.name == data.name
+    assert stored.product == data.product
+    assert stored.count == data.count
+    assert stored.price == data.price
+
     orders = db.query(Order).all()
     assert len(orders) == 1
 
@@ -91,6 +110,60 @@ def test_get_orders_by_filters_no_match(db: Session) -> None:
 
 
 ### UPDATE TESTS ###
+def test_update_order(db: Session) -> None:
+    db_list = OrderFactory.create_batch(5, name="old name")
+    old_order = db_list[0]
+    old_name = old_order.name
+    old_count = old_order.count
+    old_price = old_order.price
+    old_product = old_order.product
+    order_id = old_order.id
+
+    updated_data = OrderUpdate(name="new name", count=old_count + 1)
+    result = crud.update_order(db, order_id=order_id, data=updated_data)
+
+    assert result
+    assert result.id == order_id
+    assert result.name != old_name
+    assert result.name == "new name"
+    assert result.count == old_count + 1
+    assert result.price == old_price
+    assert result.product == old_product
+
+
+def test_update_order_no_changes(db: Session) -> None:
+    db_list = OrderFactory.create_batch(5)
+    old_order = db_list[0]
+    old_name = old_order.name
+    old_count = old_order.count
+    old_price = old_order.price
+    old_product = old_order.product
+    order_id = old_order.id
+
+    updated_data = OrderUpdate()
+    result = crud.update_order(db, order_id=order_id, data=updated_data)
+
+    assert result
+    assert result.id == order_id
+    assert result.name == old_name
+    assert result.count == old_count
+    assert result.price == old_price
+    assert result.product == old_product
+
+def test_update_order_invalid_id(db: Session) -> None:
+    OrderFactory.create_batch(5)
+    data = OrderUpdate()
+    result = crud.update_order(db, order_id=9999, data=data)
+    assert not result
+
+def test_update_order_row_count_unchanged(db: Session):
+    db_list = OrderFactory.create_batch(5, name="old name")
+    updated_data = OrderUpdate(name="updated")
+    result = crud.update_order(db, order_id=db_list[0].id, data=updated_data)
+
+    assert result
+    count = db.query(Order).count()
+    assert count == 5
 
 
 
@@ -121,10 +194,3 @@ def test_delete_same_id_twice(db: Session, fixture_order: Order):
     result = crud.delete_by_id(db, fixture_order.id)
 
     assert result is None
-
-
-# orders = [
-#     OrderFactory(name=f"user{i}", product="widget")
-#     for i in range(100)
-# ]
-
