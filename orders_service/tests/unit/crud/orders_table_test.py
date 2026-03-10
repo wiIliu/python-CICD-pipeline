@@ -111,13 +111,12 @@ def test_get_orders_by_filters_no_match(db: Session) -> None:
 
 ### UPDATE TESTS ###
 def test_update_order(db: Session) -> None:
-    db_list = OrderFactory.create_batch(5, name="old name")
-    old_order = db_list[0]
-    old_name = old_order.name
-    old_count = old_order.count
-    old_price = old_order.price
-    old_product = old_order.product
-    order_id = old_order.id
+    order = OrderFactory(name="old name")
+    old_name = order.name
+    old_count = order.count
+    old_price = order.price
+    old_product = order.product
+    order_id = order.id
 
     updated_data = OrderUpdate(name="new name", count=old_count + 1)
     result = crud.update_order(db, order_id=order_id, data=updated_data)
@@ -130,15 +129,13 @@ def test_update_order(db: Session) -> None:
     assert result.price == old_price
     assert result.product == old_product
 
-
 def test_update_order_no_changes(db: Session) -> None:
-    db_list = OrderFactory.create_batch(5)
-    old_order = db_list[0]
-    old_name = old_order.name
-    old_count = old_order.count
-    old_price = old_order.price
-    old_product = old_order.product
-    order_id = old_order.id
+    order = OrderFactory()
+    old_name = order.name
+    old_count = order.count
+    old_price = order.price
+    old_product = order.product
+    order_id = order.id
 
     updated_data = OrderUpdate()
     result = crud.update_order(db, order_id=order_id, data=updated_data)
@@ -164,6 +161,15 @@ def test_update_order_row_count_unchanged(db: Session):
     assert result
     count = db.query(Order).count()
     assert count == 5
+
+def test_update_persists_changes(db: Session):
+    order = OrderFactory()
+    updated_data = OrderUpdate(name="persisted")
+
+    crud.update_order(db, order_id=order.id, data=updated_data)
+    stored = db.query(Order).filter(Order.id == order.id).first()
+
+    assert stored.name == "persisted"
 
 
 
