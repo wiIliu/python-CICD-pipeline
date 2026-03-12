@@ -1,47 +1,40 @@
-import os
-
-os.environ.setdefault(
-    "DATABASE_URL",
-    "postgresql+psycopg://test1:test1@localhost:5432/orders_TEST"
-)
-
 import pytest
-from pathlib import Path
-from alembic import command
-from alembic.config import Config
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+# from pathlib import Path
+# from alembic import command
+# from alembic.config import Config
+# from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 from fastapi.testclient import TestClient
 from orders_service.app.main import create_app
-from ..factories.order_factory import OrderFactory
-from orders_service.app.core.config import settings
+# from ..factories.order_factory import OrderFactory
+# from orders_service.app.core.config import settings
 from orders_service.app.dependencies.db import get_db
 
-print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
-# print("[TEST] Alembic sqlalchemy.url =", alembic_cfg.get_main_option("sqlalchemy.url"))
+# print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
 
-#TODO: path change - alembic.ini
-@pytest.fixture(scope="session", autouse=True)
-def migrate_db():
-    base_dir = Path(__file__).resolve().parents[2]
-    alembic_path = base_dir / "alembic.ini"
 
-    alembic_cfg = Config(str(alembic_path))
-    # alembic_cfg = Config("orders_service/alembic.ini")
-    command.upgrade(alembic_cfg, "head")
+# #TODO: path change - alembic.ini
+# @pytest.fixture(scope="session", autouse=True)
+# def migrate_db():
+#     base_dir = Path(__file__).resolve().parents[2]
+#     alembic_path = base_dir / "alembic.ini"
 
-    yield
+#     alembic_cfg = Config(str(alembic_path))
+#     # alembic_cfg = Config("orders_service/alembic.ini")
+#     command.upgrade(alembic_cfg, "head")
+#     print("[TEST] Database migrated")
 
-print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
-# print("[TEST] Alembic sqlalchemy.url =", alembic_cfg.get_main_option("sqlalchemy.url"))
+#     yield
 
-#TODO: put in function?
-engine = create_engine(settings.DATABASE_URL)
-TestingSession = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-)
+# print("\n[TEST] SQLAlchemy settings.DATABASE_URL =", settings.DATABASE_URL)
+
+# #TODO: put in function?
+# engine = create_engine(settings.DATABASE_URL)
+# TestingSession = sessionmaker(
+#     autocommit=False,
+#     autoflush=False,
+#     bind=engine,
+# )
 
 
 @pytest.fixture
@@ -56,19 +49,19 @@ def client(db: Session):
     app.dependency_overrides.clear()
 
 
-@pytest.fixture(scope="function", autouse=True)
-def db():
-    connection = engine.connect()
-    transaction = connection.begin()
-    session = TestingSession(bind=connection)
+# @pytest.fixture(scope="function", autouse=True)
+# def db():
+#     connection = engine.connect()
+#     transaction = connection.begin()
+#     session = TestingSession(bind=connection)
 
-    yield session
+#     yield session
 
-    session.close()
-    transaction.rollback()
-    connection.close()
+#     session.close()
+#     transaction.rollback()
+#     connection.close()
 
 
-@pytest.fixture(autouse=True)
-def set_session_for_factories(db: Session):
-    OrderFactory._meta.sqlalchemy_session = db
+# @pytest.fixture(autouse=True)
+# def set_session_for_factories(db: Session):
+#     OrderFactory._meta.sqlalchemy_session = db
