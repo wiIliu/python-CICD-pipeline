@@ -23,3 +23,4 @@ def test_isolation(client):
 def test_no_leak(client):
     response = client.get("/order/1")
     assert response.status_code == 404
+    
