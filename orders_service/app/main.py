@@ -10,7 +10,7 @@ def create_app():
     )
     @fastapi_app.get("/")
     async def root():
-        return {"message": "Hello World"}
+        return {"message": "orders_service"}
 
     fastapi_app.include_router(orders.router)
     fastapi_app.include_router(health.router)

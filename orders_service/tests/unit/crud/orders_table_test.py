@@ -31,7 +31,7 @@ def test_created_order_persists_correctly(db: Session) -> None:
 
     result = crud.create_order(db=db, new_order=new_order)
     stored = db.query(Order).filter(Order.id == result.id).first()
-    
+
     assert stored is not None
     assert stored.name == data.name
     assert stored.product == data.product
