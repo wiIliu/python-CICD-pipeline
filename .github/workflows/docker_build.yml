@@ -4,10 +4,22 @@ on:
   push:
     branches:
       - main
+  pull_request: 
 
 jobs:
+  # test:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+
+  #     - name: Run tests
+  #       run: |
+  #         docker compose --env-file .env.test --profile test up --abort-on-container-exit --exit-code-from orders_service_test
+
   build_and_push:
     runs-on: ubuntu-latest
+    # needs: test
     
     steps:     
       - uses: actions/checkout@v4
@@ -31,7 +43,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./orders_serivice
+          context: ./orders_service
+          target: prod
           # context: .
           push: true
           tags: |
