@@ -52,6 +52,7 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
    python -m venv myproject
    ```
 2. **Activate** it:
+
    Windows
    ```bash
    myproject\Scripts\activate
@@ -73,15 +74,15 @@ python -m pip install --upgrade pip
 
 2. Install dependencies via requirements file
    
-Prod Requirements file
-```bash
-pip install -r requirements.txt
-```
-
-Dev Requirements file
-```bash
-pip install -r requirements_dev.txt
-```
+   Prod Requirements file
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+   Dev Requirements file
+   ```bash
+   pip install -r requirements_dev.txt
+   ```
 
 *(Make sure you are in the new python environment so packages are installed there.)*
 
