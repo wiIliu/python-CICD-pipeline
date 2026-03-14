@@ -9,7 +9,7 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 1. [Overview](#overview)  
 2. [Project Structure](#project-structure)  
 3. [Installation](#installation)  
-   - [Creating & Activating a Python Environment](#creating--activating-a-python-environment)  
+   - [Setting up Environment](#setting-up-environment)  
    - [Installing Dependencies](#installing-dependencies)  
 4. [Usage](#usage)  
 5. [License](#license)  
@@ -23,30 +23,42 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 ## Project Structure
 
 
+#### General project structure per serivce
 ```
 .
-├──── models/ # holds all .pth model exports
-├──── webdemo/ # code for website demo and info
-| ├── index.html
-| ├── methodology.html
-| ├── challenges.html
-| ├── results.html
-| ├── future-work.html
-| ├── server.js
-| ├──── static/
-| | ├── app.js
-| | ├── style.css
-├── dataPreprocessing.py   # Script to load and split RT-IoT2022
-└── requirments.txt/environment.yml          # Dependencies/Environment needed for this project
+{name}_service/ # the service folder
+├──── alembic/ # holds all database migrations
+├──── app/ # code for api and supporting elements
+| ├─── main.py
+| ├──── api/
+| | ├──── v1/
+| | | ├─── {service_routes}.py
+| | | ├─── health.py # healthcheck routes
+| ├──── core/ # configuration and database settings
+| ├──── db_logic/
+| | | ├─── crud.py # service table crud logic
+| ├──── dependencies/
+| ├──── models/
+| ├──── schemas/
+├──── tests/
+| ├──── factories/
+| ├──── integration_tests/
+| ├──── unit_tests/
+| | ├──── crud_tests/
+| | ├──── schema_tests/
+# misc
+├── alembic.ini
+├── Dockerfile
+├── docker-entrypoint.sh
+└── requirements.txt/requirements-dev.txt
 ```
 
 ---
 
 ## Installation
 
-### Creating & Activating a Python Environment
+### Setting up Environment
 
-  
 1. **Create** a new environment (example name: `myproject`):  
    ```bash
    python -m venv myproject
@@ -65,12 +77,12 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 
 ### Installing Dependencies
 
-Within your **activated** conda environment:
+Within your **activated** environment:
 
 1. Update pip
-```bash
-python -m pip install --upgrade pip
-```
+   ```bash
+   python -m pip install --upgrade pip
+   ```
 
 2. Install dependencies via requirements file
    
