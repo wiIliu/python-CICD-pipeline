@@ -4,31 +4,48 @@ on:
   pull_request:
     branches:
       - main
+  push:
+      branches:
+      - dev
+      
 jobs:
-  build:
+  pylint:
+    name: pylint
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint pylint-junit
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Analysing the code with pylint
-      run: |
-        pylint $(git ls-files '*.py') --exit-zero \
-        --reports=y \
-        --output-format=junit-xml:pylint.xml
+      - uses: actions/checkout@v4
+    
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - uses: dciborow/action-pylint@0.1.0
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           glob_pattern: "**/*.py"
+           pylint_rc: .pylintrc
+           reporter: github-pr-review
+           level: warning
+    
+    # - name: Generate pylint JUnit report
+    #   run: |
+    #     FILES=$(git ls-files '*.py')
+    #     if [ -n "$FILES" ]; then
+    #       pylint $FILES --output-format=junit-xml:pylint.xml
+    #     fi
         
-    - name: upload artifact
-      uses: actions/upload-artifact@v6
-      with:
-        name: pylint-report
-        path: pylint.xml
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v6
+    #   with:
+    #     name: pylint-report
+    #     path: pylint.xml
