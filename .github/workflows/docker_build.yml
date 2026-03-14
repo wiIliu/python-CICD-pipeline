@@ -1,4 +1,4 @@
-name: Build and push Docker image
+name: Docker
 
 on:
   push:
@@ -34,14 +34,7 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
-      # - name: Set lowercase repo name
-      #   run: |
-      #     # echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
-      #     echo "REPO=$(echo "${GITHUB_REPOSITORY##*/}" | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_ENV"
-      # ${{ vars.DOCKER_USERNAME }}/${{ env.REPO }}/orders-service:${{ github.sha }}
-
-          
+                  
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
