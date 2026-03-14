@@ -26,10 +26,11 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 7. [References](#references)
 
 ---
+<a id="overview"></a>
 ## 🔎 Overview
 
 ---
-
+<a id="project-structure"></a>
 ## 🏗️ Project Structure
 
 
@@ -64,7 +65,7 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 ```
 
 ---
-
+<a id="installation"></a>
 ## ⬇️ Installation
 
 ### Setting up Environment
@@ -116,7 +117,7 @@ Within your **activated** environment:
 - Alembic 1.18
 
 ---
-
+<a id="usage"></a>
 ## Usage
 
 #### Run services using Docker
@@ -130,7 +131,7 @@ Order API: http://localhost:8000 <br>
 Analytics API: http://localhost:8001
 
 ---
-
+<a id="contributing"></a>
 ## 🤝 Contributing
 
 1. **Fork** this repository.  
@@ -153,13 +154,13 @@ After review and testing, changes will be merged into `main` during the next rel
 We welcome suggestions, bug reports, and community contributions!
 
 ---
-
+<a id="license"></a>
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE). You’re free to use, modify, and distribute the code as allowed by that license.
 
 ---
-
+<a id="references"></a>
 ## 📋 References
 
 
