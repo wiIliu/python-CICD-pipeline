@@ -5,7 +5,7 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 ### CI / Quality Status
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![Tests](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
-![Docker Build](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)
+[![Docker image](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml)
 ![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
