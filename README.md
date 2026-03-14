@@ -1,9 +1,9 @@
 # ♾️ python CI/CD pipeline
-![Python](https://img.shields.io/badge/python-3.11-blue)
-<a href="https://github.com/wiIliu/python-CICD-pipeline/actions"><img alt="Actions Status" src="https://img.shields.io/badge/license-MIT-purple"></a>
-[![Docker image](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml)
-![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg)
-<a href="https://github.com/wiIliu/python-CICD-pipeline/main/LICENSE"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg"></a>
+![Python](https://img.shields.io/badge/python-3.11-blue) 
+<a href="https://github.com/wiIliu/python-CICD-pipeline/actions"><img alt="Actions Status" src="https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg"></a>
+[![Docker image](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml) 
+![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg) 
+<a href="https://github.com/wiIliu/python-CICD-pipeline/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-purple"></a>
 <!-- coverage badge to add -->
 ![coverage](https://img.shields.io/badge/coverage-pending-lightgrey)
 
