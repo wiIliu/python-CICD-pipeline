@@ -15,15 +15,15 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 
 ## Table of Contents
 
-1. [Overview](#🔎-overview)  
-2. [Project Structure](#🏗️-project-structure)  
-3. [Installation](#⬇️-installation)  
+1. [Overview](#overview)  
+2. [Project Structure](#project-structure)  
+3. [Installation](#installation)  
    - [Setting up Environment](#setting-up-environment)  
    - [Installing Dependencies](#installing-dependencies)  
 4. [Usage](#usage)
-5. [Contributing](#🤝-contributing)
-6. [License](#📜-license)  
-7. [References](#📋-references)
+5. [Contributing](#contributing)
+6. [License](#license)  
+7. [References](#references)
 
 ---
 ## 🔎 Overview
