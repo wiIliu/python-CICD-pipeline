@@ -1,10 +1,11 @@
 # ♾️ python-CICD-pipeline
 
-![CI](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
+### CI / Quality Status
 ![Python](https://img.shields.io/badge/python-3.11-blue)
-![Docker](https://img.shields.io/badge/docker-ready-blue)
+![Tests](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
+![Docker Build](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)
+![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
-
 
 Two Python microservices (Order + Analytics) that communicate via REST integrated with a postgresql relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
 
