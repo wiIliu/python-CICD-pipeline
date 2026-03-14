@@ -1,4 +1,11 @@
-# python-CICD-pipeline
+# ♾️ python-CICD-pipeline
+
+![CI](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
+![Python](https://img.shields.io/badge/python-3.11-blue)
+![Docker](https://img.shields.io/badge/docker-ready-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+
 Two Python microservices (Order + Analytics) that communicate via REST integrated with a postgresql relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
 
 ---
@@ -6,24 +13,25 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 
 ## Table of Contents
 
-1. [Overview](#overview)  
-2. [Project Structure](#project-structure)  
-3. [Installation](#installation)  
+1. [Overview](#🔎-overview)  
+2. [Project Structure](#🏗️-project-structure)  
+3. [Installation](#⬇️-installation)  
    - [Setting up Environment](#setting-up-environment)  
    - [Installing Dependencies](#installing-dependencies)  
-4. [Usage](#usage)  
-5. [License](#license)  
-6. [References](#references)
+4. [Usage](#usage)
+5. [Contributing](#🤝-contributing)
+6. [License](#📜-license)  
+7. [References](#📋-references)
 
 ---
-## Overview
+## 🔎 Overview
 
 ---
 
-## Project Structure
+## 🏗️ Project Structure
 
 
-#### General project structure per serivce
+#### General project structure per service
 ```
 .
 {name}_service/ # the service folder
@@ -50,12 +58,12 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 ├── alembic.ini
 ├── Dockerfile
 ├── docker-entrypoint.sh
-└── requirements.txt/requirements-dev.txt
+└── requirements.txt / requirements-dev.txt
 ```
 
 ---
 
-## Installation
+## ⬇️ Installation
 
 ### Setting up Environment
 
@@ -96,21 +104,32 @@ Within your **activated** environment:
    pip install -r requirements_dev.txt
    ```
 
-*(Make sure you are in the new python environment so packages are installed there.)*
+*(Make sure you are in the new python environment so that packages are installed there.)*
 
 **Typical Requirements** (already in `requirements.txt`):
 - Python 3.11 (or similar)
-- FastAPI
-- SqlAlchemy
-- pytest
+- FastAPI 0.128
+- SQLAlchemy 2.0
+- Pydantic 2.12
+- Alembic 1.18
 
 ---
 
 ## Usage
 
+#### Run services using Docker
+In project root run:
+```sh
+docker compose up --build
+```
+
+Once running, each Service can be accessed locally via the generated links.<br>
+Order API: http://localhost:8000 <br>
+Analytics API: http://localhost:8001
+
 ---
 
-## Contributing
+## 🤝 Contributing
 
 1. **Fork** this repository.  
 2. **Create** a new branch for your feature/fix:
@@ -122,19 +141,24 @@ Within your **activated** environment:
    git commit -m "Add my new feature"
    git push origin feature-my-improvement
    ```
-4. **Open a Pull Request** into the main branch.
+4. **Open a Pull Request** into the `dev` branch.
+
+_NOTE:_ The `main` branch is protected and only updated through
+approved pull requests from the `dev` branch.<br>
+
+After review and testing, changes will be merged into `main` during the next release.
 
 We welcome suggestions, bug reports, and community contributions!
 
 ---
 
-## License
+## 📜 License
 
 This project is licensed under the [MIT License](LICENSE). You’re free to use, modify, and distribute the code as allowed by that license.
 
 ---
 
-## References
+## 📋 References
 
 
 ---
