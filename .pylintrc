@@ -1,0 +1,18 @@
+[MASTER]
+ignore=.venv,venv,migrations,alembic
+jobs=0
+
+[MESSAGES CONTROL]
+# Disable "missing module docstring" message (C0114) 
+# Disable "missing class docstring" message (C0115) 
+# Disable "missing function docstring" message (C0116) 
+# Disable "too many public methods" message (R0904).
+disable=C0114,C0115,C0116,R0904
+
+[BASIC]
+# variable names to always be accepted
+good-names=i,j,k,e,DB,db
+
+[FORMAT]
+# Maximum number of characters on a single line.
+max-line-length=120
