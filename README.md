@@ -1,13 +1,12 @@
 # ♾️ python-CICD-pipeline
-
-Two Python microservices (Order + Analytics) that communicate via REST integrated with a postgresql relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
-
-### CI / Quality Status
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![Tests](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
 [![Docker image](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml)
 ![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
+
+Two Python microservices (Order + Analytics) that communicate via REST integrated with a postgresql relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
+
 
 
 ---
@@ -29,6 +28,17 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 <a id="overview"></a>
 ## 🔎 Overview
 
+
+### CI Pipeline
+The repo includes a CI pipeline built using **Github Actions** to enforce validation and code quality that runs automatically.
+
+The pipeline performs the following:
+
+- Tests - runs unit and integration tests using Pytest on every push and PR request
+- Pylint - Lints the code using Pylint on every push and PR request
+- Docker Build - Builds and uploads the PROD docker image to DockerHub on every PR request to `main`
+- CodeQL - Uses built-in Github CodeQL for static security analysis
+  
 ---
 <a id="project-structure"></a>
 ## 🏗️ Project Structure
@@ -126,9 +136,15 @@ In project root run:
 docker compose up --build
 ```
 
-Once running, each Service can be accessed locally via the generated links.<br>
+Once running, each Service can be accessed locally via the generated links:
+
 Order API: http://localhost:8000 <br>
 Analytics API: http://localhost:8001
+
+Interactive Swagger API docs:
+
+Order API Docs: http://localhost:8000/docs<br>
+Analytics API Docs: http://localhost:8001/docs
 
 ---
 <a id="contributing"></a>
