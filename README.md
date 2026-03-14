@@ -1,16 +1,16 @@
-# ♾️ python-CICD-pipeline
+# ♾️ python CI/CD pipeline
 ![Python](https://img.shields.io/badge/python-3.11-blue)
-![Tests](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/tests.yml/badge.svg)
+<a href="https://github.com/wiIliu/python-CICD-pipeline/actions"><img alt="Actions Status" src="https://img.shields.io/badge/license-MIT-purple"></a>
 [![Docker image](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/docker_build.yml)
 ![Pylint](https://github.com/wiIliu/python-CICD-pipeline/actions/workflows/pylint.yml/badge.svg)
-![License](https://img.shields.io/badge/license-MIT-green)
+<a href="https://github.com/wiIliu/python-CICD-pipeline/main/LICENSE"><img alt="License: MIT" src="https://black.readthedocs.io/en/stable/_static/license.svg"></a>
+<!-- coverage badge to add -->
+![coverage](https://img.shields.io/badge/coverage-pending-lightgrey)
 
-Two Python microservices (Order + Analytics) that communicate via REST integrated with a postgresql relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
 
-
+Two Python microservices (Order + Analytics) that communicate via REST integrated with a PostgreSQL relational database. Each service is Dockerized, unit-tested, and has a CI pipeline that runs tests and security scans.
 
 ---
-
 
 ## Table of Contents
 
@@ -34,15 +34,19 @@ The repo includes a CI pipeline built using **Github Actions** to enforce valida
 
 The pipeline performs the following:
 
-- Tests - runs unit and integration tests using Pytest on every push and PR request
-- Pylint - Lints the code using Pylint on every push and PR request
-- Docker Build - Builds and uploads the PROD docker image to DockerHub on every PR request to `main`
-- CodeQL - Uses built-in Github CodeQL for static security analysis
-  
+- Tests - runs unit and integration tests using Pytest on every push and PR.
+- Pylint - Lints the code using Pylint on every push and PR.
+- Docker Build - Builds and uploads the PROD docker image to DockerHub on every PR to `main`
+- CodeQL - Uses built-in GitHub CodeQL for static security analysis
+
+#### ✍️ Author
+
+LinkedIn: [Willow Connelly](https://www.linkedin.com/in/willow-connelly-28b197263/)<br>
+GitHub: [WiIliu](https://github.com/wiIliu)
+
 ---
 <a id="project-structure"></a>
 ## 🏗️ Project Structure
-
 
 #### General project structure per service
 ```
@@ -114,7 +118,7 @@ Within your **activated** environment:
    
    Dev Requirements file
    ```bash
-   pip install -r requirements_dev.txt
+   pip install -r requirements-dev.txt
    ```
 
 *(Make sure you are in the new python environment so that packages are installed there.)*
@@ -128,13 +132,19 @@ Within your **activated** environment:
 
 ---
 <a id="usage"></a>
-## Usage
+## 🚀 Usage
 
 #### Run services using Docker
 In project root run:
 ```sh
 docker compose up --build
 ```
+This starts:
+- Orders Service
+- Analytics Service
+- PostgreSQL database
+
+> If developing locally, a `test` profile can be used to run the test containers.
 
 Once running, each Service can be accessed locally via the generated links:
 
