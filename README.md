@@ -28,16 +28,45 @@ Two Python microservices (Order + Analytics) that communicate via REST integrate
 <a id="overview"></a>
 ## 🔎 Overview
 
+This repository contains two containerized RESTful backend microservices—an Orders Service and an Analytics Service—built using FastAPI and Docker with PostgreSQL integration.
+The project also includes a CI/CD pipeline implemented with GitHub Actions that automatically runs tests, builds Docker images, and performs security analysis.
+
+Project Components:
+- Orders Microservice
+- Analytics Microservice
+- PostgreSQL Database
+- Alembic Migrations
+- Multi-stage Docker Builds
+- Docker Compose Orchestration
+- GitHub Actions for CI
+
+The **Orders Microservice** implements a basic RESTful API (FastAPI) that performs CRUD operations against an `orders` database. (_Future work will include adding user authentication for additional security_)
+
+The **Analytics Microservice** will communicate via API calls with the orders service to retrieve order data and provide calculated statistical metrics. Some of these metrics include total orders, revenue statistics, average order value, and order distribution (_Future work will include creating a basic GUI to display these results in an interactive environment_)
+
+The services and database are coordinated using Docker Compose, allowing the entire system to be started with a single command.
 
 ### CI Pipeline
-The repo includes a CI pipeline built using **Github Actions** to enforce validation and code quality that runs automatically.
+The repository includes a CI pipeline built using **GitHub Actions** that run automatically to enforce validation, Docker image builds, and code quality.
 
 The pipeline performs the following:
-
 - Tests - runs unit and integration tests using Pytest on every push and PR.
 - Pylint - Lints the code using Pylint on every push and PR.
 - Docker Build - Builds and uploads the PROD docker image to DockerHub on every PR to `main`
 - CodeQL - Uses built-in GitHub CodeQL for static security analysis
+
+### Tech Stack
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- Alembic
+- PostgreSQL
+- Docker
+- GitHub Actions
+- Pytest
+
+### Learning Goals 
+This project was constructed in order to gain hands-on experience with building a CI/CD pipeline from the ground-up. It was used as a method to gain experience in connecting microservices together to build scalable architecture. 
 
 #### ✍️ Author
 
