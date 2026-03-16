@@ -21,9 +21,6 @@ FROM base AS dev
 COPY requirements-dev.txt .
 RUN pip install --no-cache-dir -r requirements-dev.txt
 
-# COPY pytest.ini .
-COPY tests ./tests/
-
 COPY alembic.ini .
 COPY alembic ./alembic
 
@@ -31,6 +28,10 @@ ENV ENV=DEV
 
 # TEST
 FROM dev AS test
+
+# COPY pytest.ini .
+COPY tests ./tests/
+
 RUN pip install --no-cache-dir pytest-cov
 ENV ENV=TEST
 
@@ -38,5 +39,3 @@ ENV ENV=TEST
 FROM base AS prod
 
 ENV ENV=PROD
-
-

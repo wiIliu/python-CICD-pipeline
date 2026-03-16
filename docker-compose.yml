@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PSWD}
       POSTGRES_DB: ${DATABASE_DB}
     ports:
-      - "15432:5432"
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -31,10 +31,42 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  
+
+  # test:
+  test-db:
+    image: postgres:16-bookworm
+    profiles: ["test"]
+    env_file:
+      - ./.env.test
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  orders_service_test:
+    profiles: ["test"]
+    build:
+      context: orders_service/
+      target: test
+      dockerfile: ./Dockerfile
+    environment:
+      ENV: TEST
+    env_file: orders_service/.env.test
+    depends_on:
+      test-db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+
 
   # analytics_service:
   #   build: ./analytics_service

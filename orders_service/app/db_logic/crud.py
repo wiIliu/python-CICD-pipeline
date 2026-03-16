@@ -34,7 +34,7 @@ def get_orders(db: Session, name: str | None = None, product: str | None = None)
 
 def delete_by_id(db: Session, order_id: int):
     try:
-        result = get_order_by_id(db, order_id) #catch for none?
+        result = get_order_by_id(db, order_id) 
         if not result:
             return None
         db.delete(result)

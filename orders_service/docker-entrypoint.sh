@@ -11,11 +11,15 @@ if [ "$ENV" = "DEV" ]; then
     --reload
 elif [ "$ENV" = "TEST" ]; then
     echo "Running tests"
-    exec pytest /app/orders_service/tests --rootdir=/app
+    exec pytest /app/orders_service --rootdir=/app
 
     # exec pytest -v --cov=orders_service
 elif [ "$ENV" = "PROD" ]; then
     echo "PROD ENVIRONMENT"
+    # alembic upgrade head
+    exec uvicorn orders_service.app.main:app \
+      --host 0.0.0.0 \
+      --port 8000
     exec uvicorn orders_service.app.main:app \
     --host 0.0.0.0 \
     --port 8000
