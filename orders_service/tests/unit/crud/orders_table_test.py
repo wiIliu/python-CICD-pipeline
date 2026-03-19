@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session 
+from sqlalchemy.orm import Session
 
 from orders_service.app.db_logic import crud
 from orders_service.app.models.order import Order
@@ -6,7 +6,7 @@ from orders_service.app.schemas.order import OrderCreate, OrderUpdate
 from orders_service.tests.factories.order_factory import OrderFactory
 
 
-### CREATE TESTS ### 
+### CREATE TESTS ###
 def test_create_order(db: Session) -> None:
     data: Order = OrderFactory.build()
     new_order = OrderCreate(
@@ -57,55 +57,77 @@ def test_get_order_by_id_not_found(db: Session) -> None:
 
 def test_get_orders_all(db: Session) -> None:
     OrderFactory.create_batch(50)
-    retrieved_orders = crud.get_orders(db=db)
-    assert len(retrieved_orders) == 50
+    orders, total = crud.get_orders(db=db, limit=50)
+    assert len(orders) == 50
+    assert total == 50
+
+def test_get_orders_paginated_fetches_all(db: Session) -> None:
+    OrderFactory.create_batch(25)
+    page_size = 10
+    offset = 0
+    all_orders = []
+
+    while True:
+        orders, total = crud.get_orders(db, limit=page_size, offset=offset)
+        all_orders.extend(orders)
+        offset += page_size
+        if offset >= total:
+            break
+
+    assert len(all_orders) == 25
+    assert len(set(order.id for order in all_orders)) == 25
 
 def test_get_orders_empty_db(db: Session) -> None:
-    retrieved_orders = crud.get_orders(db=db)
-    assert retrieved_orders == []
+    orders, total = crud.get_orders(db=db)
+    assert orders == []
+    assert total == 0
 
 def test_get_orders_by_name(db: Session) -> None:
     target = "target_customer"
     OrderFactory.create_batch(15, name="buffer customer")
     OrderFactory.create_batch(10, name=target)
 
-    retrieved_orders = crud.get_orders(db=db, name=target)
-    assert len(retrieved_orders) == 10
-    assert all(order.name == target for order in retrieved_orders)
+    orders, total = crud.get_orders(db=db, name=target)
+    assert len(orders) == 10
+    assert total == 10
+    assert all(order.name == target for order in orders)
 
 def test_get_orders_by_product(db: Session) -> None:
     target = "target_product"
     OrderFactory.create_batch(15, product="buffer product")
     OrderFactory.create_batch(10, product=target)
 
-    retrieved_orders = crud.get_orders(db=db, product=target)
-    assert len(retrieved_orders) == 10
-    assert all(order.product == target for order in retrieved_orders)
+    orders, total = crud.get_orders(db=db, product=target)
+    assert len(orders) == 10
+    assert total == 10
+    assert all(order.product == target for order in orders)
 
 def test_get_orders_by_all_filters(db: Session) -> None:
     target_name = "target_customer"
     target_product = "target_product"
-    
+
     OrderFactory.create_batch(5, name="temp customer", product="temp product")
     OrderFactory.create_batch(10, name=target_name, product="temp product 2")
     OrderFactory.create_batch(12, name="temp customer 2", product=target_product)
     OrderFactory.create_batch(6, name=target_name, product=target_product)
 
-    retrieved_orders = crud.get_orders(db=db, name=target_name, product=target_product)
-    assert len(retrieved_orders) == 6
-    assert all(order.name == target_name for order in retrieved_orders)
-    assert all(order.product == target_product for order in retrieved_orders)
+    orders, total = crud.get_orders(db=db, name=target_name, product=target_product)
+    assert len(orders) == 6
+    assert total == 6
+    assert all(order.name == target_name for order in orders)
+    assert all(order.product == target_product for order in orders)
 
 def test_get_orders_by_filters_no_match(db: Session) -> None:
     target_name = "target_customer"
     target_product = "target_product"
-    
+
     OrderFactory.create_batch(5, name="temp customer", product="temp product")
     OrderFactory.create_batch(10, name=target_name, product="temp product 2")
     OrderFactory.create_batch(12, name="temp customer 2", product=target_product)
 
-    retrieved_orders = crud.get_orders(db=db, name=target_name, product=target_product)
-    assert retrieved_orders == []
+    orders, total = crud.get_orders(db=db, name=target_name, product=target_product)
+    assert orders == []
+    assert total == 0
 
 
 
@@ -178,7 +200,7 @@ def test_delete_by_id(db: Session, fixture_order: Order) -> None:
     result = crud.delete_by_id(db, order_id=fixture_order.id)
     assert result
     assert result.id == fixture_order.id
-    
+
     deleted = db.query(Order).filter(Order.id == fixture_order.id).first()
     assert deleted is None
 

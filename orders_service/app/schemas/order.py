@@ -23,6 +23,9 @@ class OrderResponse(OrderBase):
 
 class OrderListResponse(BaseModel):
     items: list[OrderResponse]
+    total: int 
+    limit: int
+    offset: int
 
 class OrderUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=2)
