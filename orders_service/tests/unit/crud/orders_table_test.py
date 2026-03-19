@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session 
+from sqlalchemy.orm import Session
 
 from orders_service.app.db_logic import crud
 from orders_service.app.models.order import Order
@@ -6,7 +6,7 @@ from orders_service.app.schemas.order import OrderCreate, OrderUpdate
 from orders_service.tests.factories.order_factory import OrderFactory
 
 
-### CREATE TESTS ### 
+### CREATE TESTS ###
 def test_create_order(db: Session) -> None:
     data: Order = OrderFactory.build()
     new_order = OrderCreate(
@@ -200,7 +200,7 @@ def test_delete_by_id(db: Session, fixture_order: Order) -> None:
     result = crud.delete_by_id(db, order_id=fixture_order.id)
     assert result
     assert result.id == fixture_order.id
-    
+
     deleted = db.query(Order).filter(Order.id == fixture_order.id).first()
     assert deleted is None
 
