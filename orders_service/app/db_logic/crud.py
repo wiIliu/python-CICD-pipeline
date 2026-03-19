@@ -20,7 +20,7 @@ def get_order_by_id(db: Session, order_id: int):
     return db.query(Order).filter(Order.id == order_id).first()
 
 
-def get_orders(db: Session, 
+def get_orders(db: Session,
                name: str | None = None,
                product: str | None = None,
                offset=0,
@@ -39,7 +39,7 @@ def get_orders(db: Session,
 
 def delete_by_id(db: Session, order_id: int):
     try:
-        result = get_order_by_id(db, order_id) 
+        result = get_order_by_id(db, order_id)
         if not result:
             return None
         db.delete(result)
