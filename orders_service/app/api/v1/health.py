@@ -18,16 +18,15 @@ def get_health():
 def get_health_db(db: Annotated[Session, Depends(get_db)]):
     try:
         db.execute(text("SELECT 1"))
-        print("✅ DB connection OK")
-    finally:
-        db.close()
-    return {"status": "OK"}
+        return {"status": "OK"}
+    except Exception as e:
+        return {"status": "ERROR", "detail": str(e)}
+
 
 @router.get("/db/orders")
 def get_health_orders(db: Annotated[Session, Depends(get_db)]):
     try:
-        r = db.execute(text("SELECT * FROM orders")).fetchall()
-        print("Data output: ", r)
-    finally:
-        db.close()
-    return {"status": "OK"}
+        db.execute(text("SELECT * FROM orders")).fetchall()
+        return {"status": "OK"}
+    except Exception as e:
+        return {"status": "ERROR", "detail": str(e)}
