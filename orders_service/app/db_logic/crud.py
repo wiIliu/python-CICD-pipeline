@@ -20,8 +20,11 @@ def get_order_by_id(db: Session, order_id: int):
     return db.query(Order).filter(Order.id == order_id).first()
 
 
-# TODO: implement pagination
-def get_orders(db: Session, name: str | None = None, product: str | None = None):
+def get_orders(db: Session, 
+               name: str | None = None,
+               product: str | None = None,
+               offset=0,
+               limit=10):
     query = db.query(Order)
 
     if name:
@@ -29,7 +32,9 @@ def get_orders(db: Session, name: str | None = None, product: str | None = None)
     if product:
         query = query.filter(Order.product == product)
 
-    return query.all()
+    orders = query.offset(offset).limit(limit).all()
+    total = query.count()
+    return orders, total
 
 
 def delete_by_id(db: Session, order_id: int):

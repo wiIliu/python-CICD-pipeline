@@ -19,8 +19,6 @@ def get_health_db(db: Annotated[Session, Depends(get_db)]):
     try:
         db.execute(text("SELECT 1"))
         print("✅ DB connection OK")
-    finally:
-        db.close()
     return {"status": "OK"}
 
 @router.get("/db/orders")
