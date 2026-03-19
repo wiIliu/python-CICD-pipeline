@@ -1,6 +1,6 @@
-import requests as r
-from typing import Annotated, List
+# from typing import Annotated, List
 from fastapi import APIRouter, HTTPException
+from analytics_service.app.business_logic import analytics_service
 
 
 router = APIRouter(
@@ -8,8 +8,22 @@ router = APIRouter(
     tags=["stats"],
 )
 
-@router.get("/")
-def get_total_orders():
-    orders = r.get("http://orders_service:8000/orders",timeout=10)
-    total = len(orders.json()['items'])
-    return total
+
+# could also get summary per user/customer
+@router.get("/summary")
+def get_summary():
+    return analytics_service.get_summary()
+
+
+
+
+# @router.get("/orders")
+
+# @router.get("/revenue")
+
+# @router.get("/distribution")
+
+# @router.get("/dashboard") # return everything
+
+
+
