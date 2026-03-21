@@ -3,38 +3,6 @@ from datetime import datetime
 from collections import defaultdict
 
 
-### DISTRIBUTION ###
-
-def avg_order_value(orders: dict) -> float:
-    total = calc_total_order_count(orders)
-    if total == 0:
-        return 0.0
-    return calc_total_revenue(orders=orders) / total
-
-def largest_order_by_revenue(orders: dict) -> dict | None:
-    if not orders['items']:
-        return None
-    return max(orders['items'], key=lambda order: order['total'])
-
-def largest_order_by_size(orders: dict) -> dict | None:
-    if not orders['items']:
-        return None
-    return max(orders['items'], key=lambda order: order['count'])
-
-def smallest_order_by_revenue(orders: dict) -> dict | None:
-    if not orders['items']:
-        return None
-    return min(orders['items'], key=lambda order: order['total'])
-
-def median_order_total(orders: dict) -> float:
-    totals = [float(order['total']) for order in orders.get('items', []) if 'total' in order]
-    if not totals:
-        return 0.0
-    return statistics.median(totals)
-
-# calc_order_value_percentiles — p50/p75/p90 via statistics.quantiles
-
-
 ### ORDER COUNTS ###
 
 def calc_total_order_count(orders: dict) -> int:
@@ -51,7 +19,8 @@ def calc_orders_per_week(orders: dict) -> dict[str, int]:
     week_totals = defaultdict(int)
     for order in orders['items']:
         dt = datetime.fromisoformat(order['created_at'])
-        week_key = f"{dt.year}-W{dt.isocalendar().week:02d}"
+        iso = dt.isocalendar()
+        week_key = f"{iso.year}-W{iso.week:02d}"
         week_totals[week_key] += 1
     return dict(sorted(week_totals.items()))
 
@@ -85,7 +54,8 @@ def calc_revenue_per_week(orders: dict) -> dict[str, float]:
     week_totals = defaultdict(float)
     for order in orders['items']:
         dt = datetime.fromisoformat(order['created_at'])
-        week_key = f"{dt.year}-W{dt.isocalendar().week:02d}"
+        iso = dt.isocalendar()
+        week_key = f"{iso.year}-W{iso.week:02d}"
         week_totals[week_key] += order['total']
     return dict(sorted(week_totals.items()))
 
@@ -113,3 +83,37 @@ def calc_growth_rate(period_totals: dict[str, float | int]) -> float | None:
     if previous == 0:
         return None
     return round(((current - previous) / previous) * 100, 2)
+
+
+### DISTRIBUTION ###
+
+def avg_order_value(orders: dict) -> float:
+    total = calc_total_order_count(orders)
+    if total == 0:
+        return 0.0
+    return calc_total_revenue(orders=orders) / total
+
+def largest_order_by_revenue(orders: dict) -> dict | None:
+    if not orders['items']:
+        return None
+    return max(orders['items'], key=lambda order: order['total'])
+
+def largest_order_by_size(orders: dict) -> dict | None:
+    if not orders['items']:
+        return None
+    return max(orders['items'], key=lambda order: order['count'])
+
+def smallest_order_by_revenue(orders: dict) -> dict | None:
+    if not orders['items']:
+        return None
+    return min(orders['items'], key=lambda order: order['total'])
+
+def median_order_total(orders: dict) -> float:
+    totals = [float(order['total']) for order in orders.get('items', []) if 'total' in order]
+    if not totals:
+        return 0.0
+    return statistics.median(totals)
+
+# calc_order_value_percentiles — p50/p75/p90 via statistics.quantiles
+
+

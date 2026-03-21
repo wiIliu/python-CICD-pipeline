@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from analytics_service.app.clients import orders_client
-from analytics_service.app.business_logic import metrics_util
+from analytics_service.app.service import metrics_util
 from analytics_service.app.schemas.analytics import (
     SummaryResponse, RevenueResponse, OrderStatsResponse,
     DistributionResponse, DashboardResponse,
@@ -8,7 +8,6 @@ from analytics_service.app.schemas.analytics import (
 
 
 def _filter_orders(orders: dict, start_date: date | None, end_date: date | None) -> dict:
-    """Returns a new dict with items filtered by date range. Does not mutate the cache."""
     if not start_date and not end_date:
         return orders
     filtered = [
@@ -69,7 +68,6 @@ def get_distribution(start_date: date | None = None, end_date: date | None = Non
 def get_dashboard(start_date: date | None = None, end_date: date | None = None) -> DashboardResponse:
     orders = _filter_orders(orders_client.get_orders(), start_date, end_date)
 
-    # pre-compute shared values so metrics_util isn't called redundantly
     total_orders = metrics_util.calc_total_order_count(orders)
     total_revenue = metrics_util.calc_total_revenue(orders)
     aov = metrics_util.avg_order_value(orders)

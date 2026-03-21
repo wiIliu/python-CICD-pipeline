@@ -1,6 +1,6 @@
 from datetime import date
 from fastapi import APIRouter
-from analytics_service.app.business_logic import analytics_service
+from analytics_service.app.service import analytics_service
 from analytics_service.app.schemas.analytics import (
     SummaryResponse, RevenueResponse, OrderStatsResponse,
     DistributionResponse, DashboardResponse,

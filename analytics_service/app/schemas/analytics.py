@@ -39,3 +39,4 @@ class DashboardResponse(BaseModel):
     revenue: RevenueResponse
     orders: OrderStatsResponse
     distribution: DistributionResponse
+    
