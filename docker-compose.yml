@@ -33,17 +33,19 @@ services:
         condition: service_healthy
 
   analytics_service:
-    build: 
-        context: analytics_service/
-        target: dev
-        dockerfile: ./Dockerfile
+    build:
+      context: analytics_service/
+      target: dev
+      dockerfile: ./Dockerfile
     restart: on-failure
     ports:
       - "8001:8001"
     environment:
       ENV: DEV
-   # env_file:
-    #  - analytics_service/.env
+    env_file:
+      - analytics_service/.env
+    volumes:
+      - ./analytics_service:/app/analytics_service
     depends_on:
       orders_service:
         condition: service_started
@@ -78,6 +80,19 @@ services:
     depends_on:
       test-db:
         condition: service_healthy
+
+  analytics_service_test:
+    profiles: ["test"]
+    build:
+      context: analytics_service/
+      target: test
+      dockerfile: ./Dockerfile
+    environment:
+      ENV: TEST
+    env_file: analytics_service/.env
+    depends_on:
+      orders_service_test:
+        condition: service_started
 
 volumes:
   postgres_data:

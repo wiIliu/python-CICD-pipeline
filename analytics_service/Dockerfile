@@ -16,8 +16,8 @@ ENTRYPOINT ["./docker-entrypoint.sh"]
 
 FROM base AS dev
 
-# COPY requirements-dev.txt .
-# RUN pip install --no-cache-dir -r requirements-dev.txt
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements-dev.txt
 
 ENV ENV=DEV
 

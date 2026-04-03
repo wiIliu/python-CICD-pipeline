@@ -18,9 +18,6 @@ elif [ "$ENV" = "PROD" ]; then
     exec uvicorn analytics_service.app.main:app \
       --host 0.0.0.0 \
       --port 8001
-    exec uvicorn analytics_service.app.main:app \
-    --host 0.0.0.0 \
-    --port 8001
 else
     echo "No env provided - stopped"
     exit 1
