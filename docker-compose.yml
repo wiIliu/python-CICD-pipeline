@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PSWD}
       POSTGRES_DB: ${DATABASE_DB}
     ports:
-      - "5432:5432"
+      - "15432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,6 +32,24 @@ services:
       db:
         condition: service_healthy
 
+  analytics_service:
+    build:
+      context: analytics_service/
+      target: dev
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    ports:
+      - "8001:8001"
+    environment:
+      ENV: DEV
+    env_file:
+      - analytics_service/.env
+    volumes:
+      - ./analytics_service:/app/analytics_service
+    depends_on:
+      orders_service:
+        condition: service_started
+
   # test:
   test-db:
     image: postgres:16-bookworm
@@ -50,7 +68,6 @@ services:
       timeout: 5s
       retries: 5
 
-
   orders_service_test:
     profiles: ["test"]
     build:
@@ -64,11 +81,19 @@ services:
       test-db:
         condition: service_healthy
 
+  analytics_service_test:
+    profiles: ["test"]
+    build:
+      context: analytics_service/
+      target: test
+      dockerfile: ./Dockerfile
+    environment:
+      ENV: TEST
+    env_file: analytics_service/.env
+    depends_on:
+      orders_service_test:
+        condition: service_started
+
 volumes:
   postgres_data:
 
-
-  # analytics_service:
-  #   build: ./analytics_service
-  #   ports:
-  #     - "8002:8002"
