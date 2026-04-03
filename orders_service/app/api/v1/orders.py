@@ -19,9 +19,11 @@ def post_order(order : OrderCreate, db: Annotated[Session, Depends(get_db)]):
 @router.get("/", response_model=OrderListResponse)
 def get_orders(db: Annotated[Session, Depends(get_db)],
                         name: str | None = None,
-                        product: str | None = None):
-    orders = crud.get_orders(db ,name, product)
-    return {"items": orders}
+                        product: str | None = None,
+                        offset: int = 0,
+                        limit: int = 10):
+    orders, total = crud.get_orders(db ,name, product, offset, limit)
+    return {"items": orders, "total": total, "limit": limit, "offset": offset}
 
 @router.get("/{order_id}", response_model=OrderResponse)
 def get_order_from_id(order_id: int, db: Annotated[Session, Depends(get_db)]) -> OrderResponse:
